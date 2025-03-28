@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eurovision Voting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .country-button {
+            background-color: #008CBA;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .country-button:hover {
+            background-color: #005f73;
+        }
+        #scoreboard {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #scoreboard th, #scoreboard td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        #scoreboard th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Eurovision Voting</h1>
+    <div class="container" id="countries">
+        <!-- Länderbuttons werden hier dynamisch hinzugefügt -->
+    </div>
+
+    <table id="scoreboard">
+        <tr><th>Land</th><th>Punkte</th></tr>
+        <!-- Punkte werden hier angezeigt -->
+    </table>
+
+    <script>
+        const countries = ["Deutschland", "Frankreich", "Italien", "Spanien", "Schweden", "Niederlande", "Norwegen", "Großbritannien", "Finnland", "Schweiz"];
+        const scores = {};
+
+        // Punktevergabe initialisieren
+        countries.forEach(country => {
+            scores[country] = 0;
+        });
+
+        // Dynamische Erstellung der Länderbuttons
+        const countryDiv = document.getElementById('countries');
+        countries.forEach(country => {
+            let button = document.createElement('button');
+            button.classList.add('country-button');
+            button.innerText = country;
+            button.onclick = () => givePoints(country);
+            countryDiv.appendChild(button);
+        });
+
+        // Funktion, um Punkte zu vergeben
+        function givePoints(country) {
+            let points = prompt("Wie viele Punkte für " + country + " (1-12)?");
+            points = parseInt(points);
+
+            if (points >= 1 && points <= 12) {
+                scores[country] += points;
+                updateScoreboard();
+            } else {
+                alert("Ungültige Punktzahl. Bitte gib eine Zahl von 1 bis 12 ein.");
+            }
+        }
+
+        // Funktion zur Aktualisierung der Punkteübersicht
+        function updateScoreboard() {
+            const scoreboard = document.getElementById('scoreboard');
+            scoreboard.innerHTML = "<tr><th>Land</th><th>Punkte</th></tr>";
+            for (let country in scores) {
+                let row = document.createElement('tr');
+                let cell1 = document.createElement('td');
+                let cell2 = document.createElement('td');
+                cell1.textContent = country;
+                cell2.textContent = scores[country];
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                scoreboard.appendChild(row);
+            }
+        }
+    </script>
+
+</body>
+</html>
